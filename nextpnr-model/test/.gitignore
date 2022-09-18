@@ -1,0 +1,6 @@
+*.json
+*.vvp
+futurefpga_arch.v
+*_cxxrtl.cc
+*_cxxrtl.h
+futurefpga_sim
