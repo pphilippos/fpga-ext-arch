@@ -1,0 +1,20 @@
+import itertools
+
+combs = list(itertools.combinations(range(22),2))
+compiles = "MARCH=rv32imf MABI=ilp32f", "MARCH=rv32i MABI=ilp32", "MARCH=rv32im MABI=ilp32","MARCH=rv32if MABI=ilp32f"
+all_combs = itertools.product(combs, compiles, ["1"])
+
+
+f_benches = (2, 7, 8, 17, 21)
+m_benches = (0, 1, 3, 5, 13, 14, 19, 20) 
+f_f_combs = list(itertools.combinations(f_benches,2))
+f_m_combs = list(itertools.product(f_benches,m_benches))
+
+
+for c in all_combs:
+	#if "if " in c[1]:
+	#	continue
+	if (c[0] not in f_f_combs) and (c[0] not in f_m_combs) and (c[0][::-1] not in f_f_combs) and (c[0][::-1] not in f_m_combs):
+		continue
+	!make clean; {c[1]} CFLAGS="-DBe{c[0][0]} -DBe{c[0][1]}" make; make binary; cp build/firmware.bin combbins/pair{combs.index(c[0])}.{c[2]}.{c[1].split()[0].split("32")[1]}.bin   
+

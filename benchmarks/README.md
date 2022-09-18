@@ -1,0 +1,3 @@
+## More documentation pending...
+
+- The ``FreeRTOS_RISC-V-simodense_embench_f`` folder is supposed to be placed in the ``FreeRTOS/Demo/`` subdirectory of the FreeRTOS distribution. It was tested with ``FreeRTOSv202112.00``.
