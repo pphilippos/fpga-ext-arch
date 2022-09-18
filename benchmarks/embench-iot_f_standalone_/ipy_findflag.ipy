@@ -1,0 +1,23 @@
+# https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html
+
+flags = "-falign-functions  -falign-jumps  -falign-labels  -falign-loops  -fcaller-saves  -fcode-hoisting  -fcrossjumping  -fcse-follow-jumps  -fcse-skip-blocks  -fdelete-null-pointer-checks  -fdevirtualize  -fdevirtualize-speculatively  -fexpensive-optimizations  -ffinite-loops  -fgcse  -fgcse-lm   -fhoist-adjacent-loads  -finline-functions  -finline-small-functions  -findirect-inlining  -fipa-bit-cp  -fipa-cp  -fipa-icf  -fipa-ra  -fipa-sra  -fipa-vrp  -fisolate-erroneous-paths-dereference  -flra-remat  -foptimize-sibling-calls  -foptimize-strlen  -fpartial-inlining  -fpeephole2  -freorder-blocks-algorithm=stc  -freorder-blocks-and-partition  -freorder-functions  -frerun-cse-after-loop   -fschedule-insns  -fschedule-insns2  -fsched-interblock  -fsched-spec  -fstore-merging  -fstrict-aliasing  -fthread-jumps  -ftree-builtin-call-dce  -ftree-loop-vectorize  -ftree-pre  -ftree-slp-vectorize  -ftree-switch-conversion  -ftree-tail-merge  -ftree-vrp  -fvect-cost-model=very-cheap".split()
+
+flags = ['-fschedule-insns']
+
+for f in flags:
+	print (f)
+	
+	toolbins = "/home/opt/riscv-gnu-toolchain-newlib-multilib-jul-10-2020/bin"
+
+	!./build_all.py --arch riscv32 --chip generic --board simodense --cflags="-c -march=rv32imf -mabi=ilp32f -O1 -fno-align-loops -ffast-math {f} -g -pedantic  -ffreestanding  -Wextra -Wshadow -Wundef -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wredundant-decls" --cc {toolbins}/riscv64-unknown-elf-gcc   --ldflags="-Bstatic -march=rv32imf -mabi=ilp32f -O1 -fno-align-loops -ffast-math {f} -g" --user-libs="-lm"  --clean
+
+	d="'nettle-sha256'"
+
+	!cd bd/src/{d}; {toolbins}/riscv64-unknown-elf-objdump -s -t -r -d -f --source {d} > objdump.txt; {toolbins}/riscv64-unknown-elf-objcopy -O binary {d} firmware.bin; cat objdump.txt | grep "start address" | paste <(echo {d}) - 
+
+	rvbindir = '"\\"benchmarks/embench-iot_f/bd/src/'+d[1:-1]+'/firmware.bin\\""'
+	
+	!cd ../..; verilator  -cc tester.v --top-module tester -Wno-context  -Wno-fatal -Wno-lint -Wno-style  tester -DBIN={rvbindir} ; make -C obj_dir -f Vtester.mk ; g++ -O3 -march=native -I/usr/share/verilator/include -I obj_dir /usr/share/verilator/include/verilated.cpp verilator_testbench.cpp obj_dir/Vtester__ALL.a  -o bins/{d}.out ; rm obj_dir/* ; rmdir obj_dir
+
+	print (f)
+	!cd ../..; nice -n 20 time bins/{d}.out; sleep 5

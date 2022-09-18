@@ -1,0 +1,27 @@
+toolbins = "/home/opt/riscv-gnu-toolchain/build/bin"
+toolbins = "/home/opt/riscv-gnu-toolchain-newlib-multilib-jul-10-2020/bin"
+
+#!./build_all.py --arch riscv32 --chip generic --board simodense --cflags="-c -march=rv32im -mabi=ilp32 -O3  -g -pedantic  -ffreestanding  -Wextra -Wshadow -Wundef -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wredundant-decls" --cc {toolbins}/riscv64-unknown-elf-gcc   --ldflags="-Bstatic -march=rv32im -mabi=ilp32 -O3 -g" --user-libs="-lm"  --clean
+
+#!./build_all.py --arch riscv32 --chip generic --board simodense --cflags="-c -march=rv32imf -mabi=ilp32f -O3 -ffast-math -g -pedantic  -ffreestanding  -Wextra -Wshadow -Wundef -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wredundant-decls" --cc {toolbins}/riscv64-unknown-elf-gcc   --ldflags="-Bstatic -march=rv32imf -mabi=ilp32f -O3 -ffast-math -g" --user-libs="-lm"  --clean
+
+!./build_all.py --arch riscv32 --chip generic --board simodense --cflags="-c -march=rv32imf -mabi=ilp32f -O3 -fno-schedule-insns -ffast-math -g -pedantic  -ffreestanding  -Wextra -Wshadow -Wundef -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wredundant-decls" --cc {toolbins}/riscv64-unknown-elf-gcc   --ldflags="-Bstatic -march=rv32imf -mabi=ilp32f -O3 -fno-schedule-insns -ffast-math -g" --user-libs="-lm"  --clean
+
+
+#!./build_all.py --arch riscv32 --chip generic --board simodense --cflags="-c -march=rv32imfd -mabi=ilp32d -O3  -g -pedantic  -ffreestanding  -Wextra -Wshadow -Wundef -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wredundant-decls" --cc {toolbins}/riscv64-unknown-elf-gcc   --ldflags="-Bstatic -march=rv32imfd -mabi=ilp32d -O3 -g" --user-libs="-lm"  --clean
+
+
+
+dirs = !ls bd/src
+dirs = str(dirs).strip().replace(",","").replace("[","").replace("]","").split()
+
+for d in dirs: # "'aha-mont64'",["'md5sum'"]: ["'st'", "'nbody'"]: 
+	!cd bd/src/{d}; {toolbins}/riscv64-unknown-elf-objdump -s -t -r -d -f --source {d} > objdump.txt; {toolbins}/riscv64-unknown-elf-objcopy -O binary {d} firmware.bin; cat objdump.txt | grep "start address" | paste <(echo {d}) - 
+
+import sys
+sys.exit(0)	
+	
+for d in ["'nettle-sha256'"]: #dirs: #"'aha-mont64'",["'md5sum'"]: #"'st'",
+	rvbindir = '"\\"benchmarks/embench-iot_f/bd/src/'+d[1:-1]+'/firmware.bin\\""'
+	#print (rvbindir)
+	!cd ../..; verilator  -cc tester.v --top-module tester -Wno-context  -Wno-fatal -Wno-lint -Wno-style  tester -DBIN={rvbindir} ; make -C obj_dir -f Vtester.mk ; g++ -O3 -march=native -I/usr/share/verilator/include -I obj_dir /usr/share/verilator/include/verilated.cpp verilator_testbench.cpp obj_dir/Vtester__ALL.a  -o bins/{d}.out ; rm obj_dir/* ; rmdir obj_dir

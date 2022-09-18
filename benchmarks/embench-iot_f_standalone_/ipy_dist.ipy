@@ -1,0 +1,42 @@
+toolbins = "/home/opt/riscv-gnu-toolchain-newlib-multilib-jul-10-2020/bin"
+
+dirs = !ls bd/src
+dirs = str(dirs).strip().replace(",","").replace("[","").replace("]","").split()
+
+dict=dict()
+
+for d in dirs: 	
+	!{toolbins}/riscv64-unknown-elf-objdump -s -t -r -d -f -Mno-aliases --source bd/src/{d}/{d} > tmp.txt
+	l = !cat tmp.txt| grep ":" | awk '{print $3}' | sort | uniq | grep -v "[0-9]" | grep -v '"'| grep -v '('| grep -v ":"| grep -v "/"| grep -v "section"| grep -v "gMax"| grep -v "format"| grep -v "\["| grep -v ">"| grep -v "="| grep -v "&"| grep -v flags| grep -v frrm | tr '\n' ' '  
+	for ins in l[0].split():
+		if ins not in dict:
+			dict[ins]=[]
+		dict[ins]+=[d[1:-1]]
+
+f="fadd.s fsub.s fmul.s fdiv.s fsgnj.s fsgnjn.s fsgnjx.s fmin.s fmax.s fsqrt.s  fle.s flt.s feq.s  fcvt.w.s fcvt.wu.s fmv.x.w fclass.s  fcvt.s.w fcvt.s.wu fmv.w.x  flw  fsw  fmadd.s fmsub.s fnmsub.s fnmadd.s".split()
+m="mul mulh mulhsu mulhu div divu rem remu".split()
+
+removing="All	binary	padding	the	get	this	for	<	?	*pQ	b	i	result".split()
+l1, l2, l3 = [], [], []
+for k in dict:
+	if k not in removing:
+		if k in f:
+			l2+=[k]
+		elif k in m:
+			l3+=[k]
+		else:
+			l1+=[k]
+l1.sort()
+l2.sort()
+l3.sort()
+new_list=l1+l3+l2
+
+print (" ' ' "+str(new_list)[1:-1].replace(",",""))
+for d in dirs: 
+	s=d+" "
+	for inst in new_list:
+		if d[1:-1] in dict[inst]:
+			s+="1 "
+		else:
+			s+="0 "
+	print (s)
