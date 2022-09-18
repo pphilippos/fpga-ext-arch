@@ -8,10 +8,10 @@ This is a research paper exploring a novel FPGA-extended computer architecture, 
 
 The following content placeholders are going to be eventually populated soon:
 
-1. Softcore framework (Simodense (RV32IM) extended with "F" (RV32IMF) and "Zicsr")
-2. The ported benchmarks (Embench with F) and operating system (FreeRTOS)
-3. [nextpnr-model](tree/main/nextpnr-model): The FPGA architecture model (nextpnr experiment)
-4. Intel PIN experiments for opcode characterisation
+- Softcore framework (Simodense (RV32IM) extended with "F" (RV32IMF) and "Zicsr")
+- The ported benchmarks (Embench with F) and operating system (FreeRTOS)
+- [nextpnr-model](https://github.com/pphilippos/fpga-ext-arch/tree/main/nextpnr-model): The FPGA architecture model (nextpnr experiment)
+- Intel PIN experiments for opcode characterisation
 
 
 ### Documentation
