@@ -11,7 +11,7 @@ The following content placeholders are going to be eventually populated soon:
 - Softcore framework (Simodense (RV32IM) extended with "F" (RV32IMF) and "Zicsr")
 - The ported benchmarks (Embench with F) and operating system (FreeRTOS)
 - [nextpnr-model](https://github.com/pphilippos/fpga-ext-arch/tree/main/nextpnr-model): The FPGA architecture model (nextpnr experiment)
-- Intel PIN experiments for opcode characterisation
+- [pintools-opcode-prof](https://github.com/pphilippos/fpga-ext-arch/tree/main/pintools-opcode-prof): Intel PIN experiments for opcode characterisation
 
 
 ### Documentation
