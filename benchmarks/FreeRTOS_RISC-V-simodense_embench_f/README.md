@@ -1,3 +1,5 @@
+# (please ignore this README)
+
 # Emulating generic RISC-V 32bit machine on spike
 
 ## Requirements
