@@ -18,4 +18,4 @@ This is a research paper exploring a novel FPGA-extended computer architecture, 
 
 This is mostly of research nature, thus, there is minimal documentation currently, but it will be improved eventually. The [paper](https://arxiv.org/pdf/2203.10359.pdf) has important techical information that can help with reproducing results.
 
-As the experiments are based on other tools such as [nextpnr] (https://github.com/YosysHQ/nextpnr), however, it may be easier to become familiar with those first. For the Simodense experiments you can start from the [original repository](https://github.com/pphilippos/simodense), which contains tutorials, video etc. 
+As the experiments are based on other tools such as [nextpnr](https://github.com/YosysHQ/nextpnr), however, it may be easier to become familiar with those first. For the Simodense experiments you can start from the [original repository](https://github.com/pphilippos/simodense), which contains tutorials, video etc. 
