@@ -1,8 +1,15 @@
 
-## Softcore framework 
-###(Simodense (RV32IM) extended with "F" (RV32IMF) (implemented behaviourually) and "Zicsr". This also targets the faster Verilator rather than the more realistic iVerilog for simulation.
+## Softcore framework - simodensef
+
+This is Simodense (RV32IM) extended with "F" (RV32IMF) (implemented behaviourually) and "Zicsr". This also targets the faster Verilator rather than the more realistic iVerilog for simulation. 
+
+Click [here](https://github.com/pphilippos/simodense) for more information on the original Simodense.
+
+Click [here](https://arxiv.org/pdf/2203.10359.pdf) to read the paper.
 
 (More documentation pending.)
+
+### Instructions
 
 - If verilator is installed, running ``bash runv.sh`` should be able to run a FreeRTOS experiment that oversubscribes 2 tasks (Embench's ud and wikisort). 
  
@@ -10,7 +17,7 @@
 
 - ``-DBL1lat=10 -DBL1lathit=1``, for instance, means a 10-cycle bitstream miss latency, and an 1-cycle bitstream miss latency, as described in the paper.
 
-Example run:
+### Example run
 
 ```
 Simulation starting...
@@ -36,6 +43,3 @@ Simulation ended...
 
 ```
 
-Click [here](https://github.com/pphilippos/simodense) for more information on the original simodense.
-
-Click [here](https://arxiv.org/pdf/2203.10359.pdf) to read the paper.
