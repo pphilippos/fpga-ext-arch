@@ -7,8 +7,6 @@ Click [here](https://github.com/pphilippos/simodense) for more information on th
 
 Click [here](https://arxiv.org/pdf/2203.10359.pdf) to read the paper.
 
-(More documentation pending.)
-
 ### Instructions
 
 - If verilator is installed, running ``bash runv.sh`` should be able to run a FreeRTOS experiment that oversubscribes 2 tasks (Embench's ud and wikisort). 
