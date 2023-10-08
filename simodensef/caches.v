@@ -36,11 +36,11 @@ module IL1CacheWithImaginaryBL1Cache (clk, reset, PC, instr, ready,
     input readyB;
 
     /*(* ram_style = "distributed" *)*/ reg [`VLEN-1:0] mem [`IL1sets-1:0];
-    reg [`IADDR_bits-`IL1setsLog2-`VLEN_Log2-1:0] tag_array [`IL1sets-1:0];
+    reg [`IADDR_bits-`IL1setsLog2-`VLEN_Log2+3-1:0] tag_array [`IL1sets-1:0];
     reg valid [`IL1sets-1:0]; // this could be useless 
     
     wire [`IL1setsLog2-1:0] set; assign set = PC>>(`VLEN_Log2-3);
-    wire [`IADDR_bits-`IL1setsLog2-`VLEN_Log2-1:0] tag; assign tag = PC>>(`VLEN_Log2-3+`IL1setsLog2);
+    wire [`IADDR_bits-`IL1setsLog2-`VLEN_Log2+3-1:0] tag; assign tag = PC>>(`VLEN_Log2-3+`IL1setsLog2);
     
     wire hit; assign hit = valid[set] && (tag_array[set]==tag);
     reg [`VLEN_Log2-5-1:0] roffset; //assign roffset = PC>>2;
@@ -173,8 +173,8 @@ module IL1CacheWithImaginaryBL1Cache (clk, reset, PC, instr, ready,
 			//ready<=((hit||readyB) && bl1_hit && (bl1_delay==0)) || bl1_delay[`BL1lat-1];
 			//ready<= (hit && bl1_hit && (bl1_delay==0)) || (readyB && (bl1_hit/*||bl1_delay[`BL1lat-1]*/)); 					
 			ready<=(((ready&&hit/*&&(bl1_delay==0)*/)||readyB) && bl1_hit &&((!in_M_or_F) || (`BL1lathit==0)) ) 
-			|| (bl1_delay/*==1'b1<<`BL1lat-1/**/[`BL1lat-1] /*&& bl1_was_miss*/) 
-			|| (/*(`BL1lathit!=0)&&*/(bl1_delay_hits/*==1'b1<<`BL1lat-1/**/[`BL1lathit-1]) /*&& !bl1_was_miss*/);
+			|| (bl1_delay/*==1'b1<<`BL1lat-1*/[`BL1lat-1] /*&& bl1_was_miss*/) 
+			|| (/*(`BL1lathit!=0)&&*/(bl1_delay_hits/*==1'b1<<`BL1lat-1*/[`BL1lathit-1]) /*&& !bl1_was_miss*/);
 			
 			//if(readyB && (bl1_delay!=0))$display("error");
 			
@@ -217,11 +217,11 @@ module IL1Cache (clk, reset, PC, instr, ready,
     input readyB;
 
     /*(* ram_style = "distributed" *)*/ reg [`VLEN-1:0] mem [`IL1sets-1:0];
-    reg [`IADDR_bits-`IL1setsLog2-`VLEN_Log2-1:0] tag_array [`IL1sets-1:0];
+    reg [`IADDR_bits-`IL1setsLog2-`VLEN_Log2+3-1:0] tag_array [`IL1sets-1:0];
     reg valid [`IL1sets-1:0];
     
     wire [`IL1setsLog2-1:0] set; assign set = PC>>(`VLEN_Log2-3);
-    wire [`IADDR_bits-`IL1setsLog2-`VLEN_Log2-1:0] tag; assign tag = PC>>(`VLEN_Log2-3+`IL1setsLog2);
+    wire [`IADDR_bits-`IL1setsLog2-`VLEN_Log2+3-1:0] tag; assign tag = PC>>(`VLEN_Log2-3+`IL1setsLog2);
     
     wire hit; assign hit = valid[set] && (tag_array[set]==tag);
     reg [`VLEN_Log2-5-1:0] roffset; //assign roffset = PC>>2;
@@ -290,11 +290,11 @@ module IL1CacheBlock (clk, reset, PC, instr, ready,
     //assign PCB=PC;
     // now works with both distributed and block, distributed turned faster
     (* ram_style = "distributed" *) reg [`VLEN-1:0] block_ram [`IL1sets-1:0];
-    reg [`IADDR_bits-`IL1setsLog2-`VLEN_Log2-1:0] tag_array [`IL1sets-1:0];
+    reg [`IADDR_bits-`IL1setsLog2-`VLEN_Log2+3-1:0] tag_array [`IL1sets-1:0];
     reg valid [`IL1sets-1:0];
     
     wire [`IL1setsLog2-1:0] set; assign set = PC>>(`VLEN_Log2-3);
-    wire [`IADDR_bits-`IL1setsLog2-`VLEN_Log2-1:0] tag; assign tag = PC>>(`VLEN_Log2-3+`IL1setsLog2);
+    wire [`IADDR_bits-`IL1setsLog2-`VLEN_Log2+3-1:0] tag; assign tag = PC>>(`VLEN_Log2-3+`IL1setsLog2);
     
     wire hit; assign hit = valid[set] && (tag_array[set]==tag);
     reg [`VLEN_Log2-5-1:0] roffset; //assign roffset = PC>>2;
