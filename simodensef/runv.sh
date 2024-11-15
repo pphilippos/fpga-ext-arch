@@ -8,7 +8,7 @@
 verilator  -cc tester.v --top-module tester -Wno-context  -Wno-fatal -Wno-lint -Wno-style  tester -DBL1mode=1 -DBL1lat=10 -DBL1lathit=1 -DBL1ways=4 -DBIN="\"firmware.bin\"" 
 
 make -C obj_dir -f Vtester.mk
-g++ -O3 -march=native -I/usr/share/verilator/include -I obj_dir /usr/share/verilator/include/verilated.cpp verilator_testbench.cpp obj_dir/Vtester__ALL.a  -o tester.out
+g++ -O3 -march=native -I/usr/share/verilator/include -I obj_dir /usr/share/verilator/include/verilated.cpp verilator_testbench.cpp obj_dir/*.a  -o tester.out
 
 #-I/home/philippos/Loki/systemc-2.3.1/include/
 
